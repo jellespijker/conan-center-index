@@ -54,12 +54,6 @@ class MpdecimalConan(ConanFile):
             del self.settings.compiler.libcxx
             del self.settings.compiler.cppstd
 
-    def build_requirements(self):
-        if self._is_msvc:
-            self.build_requires("automake/1.16.4")
-            if self._settings_build.os == "Windows" and not tools.get_env("CONAN_BASH_PATH"):
-                self.build_requires("msys2/cci.latest")
-
     def validate(self):
         if self._is_msvc and self.settings.arch not in ("x86", "x86_64"):
             raise ConanInvalidConfiguration("Arch is unsupported")
