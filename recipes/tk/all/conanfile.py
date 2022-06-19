@@ -153,16 +153,15 @@ class TkConan(ConanFile):
         with tools.vcvars(self.settings):
             tcldir = self.deps_cpp_info["tcl"].rootpath.replace("/", "\\\\")
             self.run(
-                """nmake -nologo -f "{cfgdir}/makefile.vc" INSTALLDIR="{pkgdir}" OPTS={opts} TCLDIR="{tcldir}" TCL_LIBRARY="{tcl_library}" TCLIMPLIB="{tclimplib}" TCLSTUBLIB="{tclstublib}" {target}""".format(
+                """nmake -nologo -f "{cfgdir}/makefile.vc" INSTALLDIR="{pkgdir}" OPTS={opts} TCLDIR="{tcldir}" TCLIMPLIB="{tclimplib}" TCLSTUBLIB="{tclstublib}" {target}""".format(
                     cfgdir=self._get_configure_folder("win"),
                     pkgdir=self.package_folder,
                     opts=",".join(opts),
                     tcldir=tcldir,
                     tclstublib=tclstublib,
                     tclimplib=tclimplib,
-                    tcl_library=self.deps_env_info['tcl'].TCL_LIBRARY.replace("\\", "/"),
                     target=target,
-                ), cwd=self._get_configure_folder("win"),
+                ), run_environment = True, env = "conanrun", cwd=self._get_configure_folder("win"),
             )
 
     def _configure_autotools(self):
@@ -252,7 +251,9 @@ class TkConan(ConanFile):
         tk_library = os.path.join(self.package_folder, "lib", "{}{}".format(self.name, ".".join(self.version.split(".")[:2]))).replace("\\", "/")
         self.output.info("Setting TK_LIBRARY environment variable: {}".format(tk_library))
         self.env_info.TK_LIBRARY = tk_library
+        self.runenv_info.define_path("TK_LIBRARY", tk_library)
 
         tcl_root = self.package_folder.replace("\\", "/")
         self.output.info("Setting TCL_ROOT environment variable: {}".format(tcl_root))
         self.env_info.TCL_ROOT = tcl_root
+        self.runenv_info.define_path("TCL_ROOT", tcl_root)
