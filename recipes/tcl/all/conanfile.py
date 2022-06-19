@@ -228,15 +228,19 @@ class TclConan(ConanFile):
         tcl_library = os.path.join(self.package_folder, "lib", "{}{}".format(self.name, ".".join(self.version.split(".")[:2])))
         self.output.info("Setting TCL_LIBRARY environment variable to {}".format(tcl_library))
         self.env_info.TCL_LIBRARY = tcl_library
+        self.runenv_info.define_path("TCL_LIBRARY", tcl_library)
 
         tcl_root = self.package_folder
         self.output.info("Setting TCL_ROOT environment variable to {}".format(tcl_root))
         self.env_info.TCL_ROOT = tcl_root
+        self.runenv_info.define_path("TCL_ROOT", tcl_root)
 
         tclsh_list = list(filter(lambda fn: fn.startswith("tclsh"), os.listdir(os.path.join(self.package_folder, "bin"))))
         tclsh = os.path.join(self.package_folder, "bin", tclsh_list[0])
         self.output.info("Setting TCLSH environment variable to {}".format(tclsh))
         self.env_info.TCLSH = tclsh
+        self.runenv_info.define_path("TCLSH", tclsh)
+        self.user_info.tclsh = tclsh
 
         bindir = os.path.join(self.package_folder, "bin")
         self.output.info("Adding PATH environment variable: {}".format(bindir))
