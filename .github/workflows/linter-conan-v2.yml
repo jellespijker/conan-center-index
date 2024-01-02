@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Get changed files
-        uses: tj-actions/changed-files@v20
+        uses: tj-actions/changed-files@v41
         id: changed_files
         with:
           files: |
@@ -65,7 +65,7 @@ jobs:
           fetch-depth: 2
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v20
+        uses: tj-actions/changed-files@v41
         with:
           files: |
             recipes/*/*/conanfile.py
